@@ -1,0 +1,17 @@
+IMPORTATNT NOTE FOR DEVELOPERS
+==============================
+
+The asn1c package is bugous!
+
+Use the latest version from Lev's SVN tree:
+svn co https://asn1c.svn.sourceforge.net/svnroot/asn1c/trunk asn1c
+
+./configure
+make
+sudo make install
+
+Date: 2008-08-05
+
+===============================
+Andras Takacs, Ramsys Inc
+andras.takacs@ramsys.hu

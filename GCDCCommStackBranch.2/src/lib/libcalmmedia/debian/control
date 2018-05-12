@@ -1,0 +1,11 @@
+Source: libcalmmedia
+Priority: extra
+Maintainer: Jozsef Kovacs <jozsef.kovacs@ramsys.hu>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+Section: libs
+
+Package: libcalmmedia
+Architecture: i386
+Depends:  ${shlibs:Depends}
+Description: CVIS libcalmmedia + header files

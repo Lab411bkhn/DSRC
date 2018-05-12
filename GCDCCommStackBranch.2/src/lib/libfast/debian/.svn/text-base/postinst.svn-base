@@ -1,0 +1,2 @@
+#!/bin/sh
+sed -i  's/^\(\#define\ PF_MAX\)\(.*\)$/\1\t35/' /usr/include/bits/socket.h && exit 0

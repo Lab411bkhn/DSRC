@@ -1,0 +1,18 @@
+libfast (2.2.0) feisty; urgency=low
+
+  * Release: 2.2.0
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Tue,  3 Jun 2008 17:17:07 -0400
+
+libfast (1.0-1ubuntu1) feisty; urgency=low
+
+  * R3.1 release 
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Wed,  5 Mar 2008 22:46:18 -0500
+
+libfast (1.0-1) unstable; urgency=low
+
+  * Initial release 
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Wed,  6 Feb 2008 17:50:38 -0500
+

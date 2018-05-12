@@ -1,0 +1,14 @@
+Source: libfast
+Priority: extra
+Maintainer: Jozsef Kovacs <jozsef.kovacs@ramsys.hu>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+Section: libs
+
+
+Package: libfast
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: CVIS FAST library + development headers
+ libfast

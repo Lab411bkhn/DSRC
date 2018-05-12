@@ -1,0 +1,58 @@
+#!/usr/bin/make -f
+#
+# debian/rules for Ubuntu crda
+#
+# Use this however you want, just give credit where credit is due.
+#
+# Copyright (c) 2009 Tim Gardner <tim.gardner@canonical.com>
+#
+
+REG_PATH = /usr/lib/crda
+RBIN=regulatory.bin
+CRDA_PATH = /sbin
+UDEVR=/etc/udev/rules.d
+
+pkg=wireless-crda
+pkg_dir = $(CURDIR)/debian/$(pkg)
+
+build:
+	dh_testdir
+	cp keys-gcrypt.c.sav keys-gcrypt.c
+	touch keys-gcrypt.c
+	$(MAKE) V=1 REG_BIN=$(shell pwd)/$(RBIN)
+
+clean:
+	dh_testdir
+	dh_testroot
+	$(MAKE) clean
+	rm -rf $(pkg_dir)
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k -p$(pkg_dir)
+	$(MAKE) install REG_BIN=$(shell pwd)/$(RBIN) DESTDIR=$(pkg_dir)
+	install -d $(pkg_dir)$(REG_PATH)
+	install -o 0 -g 0 -m 644 $(RBIN) $(pkg_dir)$(REG_PATH)/$(RBIN)
+
+
+binary-indep:
+
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs README LICENSE
+	dh_install
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

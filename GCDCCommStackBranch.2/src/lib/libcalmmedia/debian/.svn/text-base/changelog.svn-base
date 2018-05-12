@@ -1,0 +1,18 @@
+libcalmmedia (2.3.0) feisty; urgency=low
+
+  * Release: 2.3.0
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Tue,  3 Jun 2008 17:17:03 -0400
+
+libcalmmedia (1.0-1ubuntu1) feisty; urgency=low
+
+  * R3.1 release
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Wed,  5 Mar 2008 22:46:00 -0500
+
+libcalmmedia (1.0-1) stable; urgency=low
+
+  * Initial release 
+
+ -- Jozsef Kovacs <jozsef.kovacs@ramsys.hu>  Thu,  6 Sep 2007 19:24:20 -0400
+

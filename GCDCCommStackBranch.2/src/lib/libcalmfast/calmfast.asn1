@@ -1,0 +1,71 @@
+-- Location: D:\PEEKDATA\SAFESPOT\Dist\bin\bncompiler.cmd
+-- Working Directory: ${container_loc}
+-- Arguments: -f ${resource_name} -m java -mp D:\PEEKDATA\ODYSA\BinaryNotes\Dist\bin\modules -ns nl.peek.cvis.vehiclebeacon.interoperability -o .
+
+CalmFast DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+-- API Message
+RequestMessage ::= SEQUENCE {
+  serial	INTEGER(0..65535),
+  payload	CHOICE {
+    open	[0]	OpenRequest,
+    close	[1]	EmptyRequest,
+    send	[2]	SendRequest,
+    publish	[3]	PublishRequest,
+    unpublish	[4]	EmptyRequest,
+    monitor	[5]	EmptyRequest,
+    unmonitor	[6]	EmptyRequest
+  }
+}
+
+ReplyMessage ::= SEQUENCE {
+  serial	INTEGER(0..65535),
+  payload	CHOICE {
+    openack	[0]	OpenReply,
+    closeack	[1]	CloseReply,
+    msg		[2]	MsgReply,
+    service	[3]	MsgReply,
+    fault	[4]	FaultReply
+  }
+}
+
+OpenRequest ::= SEQUENCE {
+   sid		INTEGER(0..4294967295)
+}
+   
+EmptyRequest ::= SEQUENCE {
+}
+
+SendRequest ::= SEQUENCE {
+   url		UrlString,
+   data		ByteString
+}
+
+PublishRequest ::= SEQUENCE {
+  data		ByteString,
+  interval	INTEGER(0..1000)
+}
+
+OpenReply ::= SEQUENCE {
+  url		UrlString
+}   
+
+CloseReply ::= SEQUENCE {
+  data		INTEGER(0..255)
+}  
+
+MsgReply ::= SEQUENCE {
+  url		UrlString,
+  data		ByteString
+}
+
+FaultReply ::= SEQUENCE {
+  msg		OCTET STRING
+}
+
+UrlString ::= OCTET STRING
+
+ByteString ::= OCTET STRING
+
+END

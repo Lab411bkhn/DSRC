@@ -1,0 +1,3 @@
+Some linux header files from the CVIS build.
+
+These are needed to be able to build libcalmmedia and libfast.

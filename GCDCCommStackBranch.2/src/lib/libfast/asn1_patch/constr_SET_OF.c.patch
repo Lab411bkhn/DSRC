@@ -1,0 +1,4 @@
+924c924
+< 				rv.code == RC_FAIL;
+---
+> 				rv.code = RC_FAIL;

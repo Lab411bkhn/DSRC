@@ -1,0 +1,12 @@
+110c110
+< 			? asn_INTEGER2ulong(&tmp, &l)
+---
+> 			? asn_INTEGER2ulong(&tmp, (unsigned long *)&l)
+190c190
+< 			? asn_INTEGER2ulong(&st, &l)
+---
+> 			? asn_INTEGER2ulong(&st, (unsigned long *)&l)
+258c258
+< 			? asn_INTEGER2ulong(&tmpint, native)
+---
+> 			? asn_INTEGER2ulong(&tmpint, (unsigned long *)native)

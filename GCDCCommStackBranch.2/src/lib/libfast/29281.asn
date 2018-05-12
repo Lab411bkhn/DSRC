@@ -1,0 +1,170 @@
+CALMime {iso(1) standard(0) calm-fast(29281)} DEFINITIONS::=BEGIN
+
+-- copy from ISO 21218
+
+MedType::=ENUMERATED{
+    calm21212 (2),
+    calm21213 (3),
+    calm21214 (4),
+    calm21215 (5),
+    calm21216 (6),
+    iso15628 (128),
+    lanFast (254),
+    lanIP (255)
+}
+
+-- copy from ISO 24102
+
+StationID::=OCTET STRING (SIZE(4))
+
+-- copy from ...
+
+TransportAddressType::=INTEGER{
+    unknown(0),
+    udpIpv4(1),
+    udpIpv6(2),
+    udpIpv4z(3),
+    udpIpv6z(4),
+    tcpIpv4(5),
+    tcpIpv6(6),
+    tcpIpv4z(7),
+    tcpIpv6z(8),
+    sctpIpv4(9),
+    sctpIpv6(10),
+    sctpIpv4z(11),
+    sctpIpv6z(12),
+    local(13),
+    udpDns(14),
+    tcpDns(15),
+    sctpDns(16)
+}
+
+TransportAddress::=OCTET STRING (SIZE (0..255))
+
+-- elements of IP Prefix information
+
+IpPrefix::=SEQUENCE{
+    prefix      [0] TransportAddress,
+    prefixLen   [1] INTEGER(0..128)
+}
+
+IpPrefixList::=SEQUENCE(SIZE(0..255)) OF IpPrefix
+
+-- elements for ServiceChannels
+
+ServiceChannel::=SEQUENCE{
+    serviceChannel INTEGER(0..255),
+    medium MedType,
+    schParams OCTET STRING
+}
+
+-- elements for IP services
+
+IpServiceID::=INTEGER(0..127,...)
+
+IpAddressInfo::=SEQUENCE{
+    addressType TransportAddressType,
+    address TransportAddress
+}
+
+IpInfo::=SEQUENCE{
+    address IpAddressInfo
+}
+
+IpContextData::=OCTET STRING
+
+IpServiceData::=OCTET STRING
+
+IpContext::=SEQUENCE{
+    serviceID IpServiceID,
+    contextData IpContextData,
+    ipInfo IpInfo
+}
+
+IpService::=SEQUENCE{
+    fill [0] BIT STRING (SIZE(6)),
+    serviceID [1] IpServiceID,
+    serviceData [2] IpServiceData OPTIONAL,
+    ipInfo [3] IpInfo,
+    serviceChannel [4] INTEGER(0..255) OPTIONAL
+}
+
+-- elements for FAST services
+
+ServiceID::=INTEGER(0..127,...)
+
+NWref::=INTEGER(0..255)
+
+ContextData::=OCTET STRING
+
+ServiceData::=OCTET STRING
+
+FastContext::=SEQUENCE{
+    serviceID ServiceID,
+    contextData ContextData,
+    userNWref NWref
+}
+
+FastService::=SEQUENCE {
+    fill [0] BIT STRING (SIZE(5)),
+    serviceID [1] ServiceID,
+    serviceData [2] ServiceData OPTIONAL,
+    serverNWref [3] NWref OPTIONAL,
+    serviceChannel [4] INTEGER(0..255) OPTIONAL
+}
+
+-- elements of Main structures
+
+MessageType::=ENUMERATED{
+    sta (0),
+    stc (1),
+    reqNoAck (5),
+    reqNeedAck (6),
+    res (7)
+}
+
+ServiceList::=SEQUENCE(SIZE(0..255)) OF FastService
+
+ChannelList::=SEQUENCE(SIZE(0..255)) OF ServiceChannel
+
+IpServList::=SEQUENCE(SIZE(0..255)) OF IpService
+
+ServContextList::=SEQUENCE(SIZE(0..255)) OF FastContext
+
+IpContextList::=SEQUENCE(SIZE(0..255)) OF IpContext
+
+-- Main structures 
+
+Sta::=SEQUENCE{
+    fill [0] BIT STRING (SIZE(5)),
+    messageType [1] MessageType, -- sta
+    serverID [2] StationID,
+    serviceList [3] ServiceList OPTIONAL,
+    channelList [4] ChannelList OPTIONAL,
+    ipServList [5] IpServList OPTIONAL,
+    ipPrefixList [6] IpPrefixList OPTIONAL
+}
+
+Stc::=SEQUENCE{
+    fill [0] BIT STRING (SIZE(6)),
+    messageType [1] MessageType, -- stc
+    clientID [2] StationID,
+    servContextList [3] ServContextList OPTIONAL,
+    ipContextList [4] IpContextList OPTIONAL,
+    ipPrefixList [5] IpPrefixList OPTIONAL
+}
+
+Request::=SEQUENCE{
+    messageType [0] MessageType, -- req*
+    messageCounter [1] INTEGER(0..31),
+    data [2] OCTET STRING
+}
+
+Response::=SEQUENCE{
+    messageType [0] MessageType, -- res
+    messageCounter [1] INTEGER(0..31),
+    data [2] OCTET STRING
+}
+
+END
+

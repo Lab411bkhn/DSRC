@@ -1,0 +1,259 @@
+Interoperability DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+-- CAM Message
+CooperativeAwarenessMessage ::= SEQUENCE {
+  header		CamHeader,
+  payload		CamPayload		-- Fixed + Optional Payload
+}
+
+-- CAM Header
+CamHeader ::= SEQUENCE {
+  sequenceNumber	INTEGER(0..65535),
+  nodeID		NodeID,
+  nodeType		NodeType,
+  timestamp		Timestamp,	-- This is the time of the message transmission, not the time of the position measurement
+  position		Position2D,
+  positionVariance	PositionVariance,
+  nodeSpeed		SpeedModule,
+  nodeHeading		Heading,
+  priority		Priority
+}
+
+-- CAM Payload
+CamPayload ::= CHOICE {
+  vehicleCamPayload	[0] VehicleCamPayload,
+  rsuCamPayload		[1] RsuCamPayload
+}
+
+VehicleCamPayload ::= SEQUENCE {
+  vehicleElevation		Elevation,
+  vehicleType			VehicleType,
+  vehicleSize			VehicleSize,
+  longitudinalAcceleration	LongitudinalAcceleration,
+  yawRate			YawRate,
+  exteriorLights		ExteriorLights,
+  accelerationControl		AccelerationControl,
+  covarianceMatrix		IncompleteCovarianceMatrix,
+  numOfItemsInTaggedList	INTEGER(0..32),
+  taggedList			CamTaggedList	OPTIONAL
+}
+
+RsuCamPayload ::= SEQUENCE {
+  nearestRsu			NearestRsu,
+  temperature			Temperature,
+  visibilityRange		VisibilityRange,
+  weather			Weather,
+  positionCovariance		PositionCovariance,
+  numOfItemsInTaggedList	INTEGER(0..32),
+  taggedList			CamTaggedList	OPTIONAL
+}
+
+-- CAM data definition
+AccelerationControl ::= BIT STRING {
+  brakePedal			(0),	-- B'10000'
+  gasPedalAct			(1),	-- B'01000'
+  cruiseControl			(2),	-- B'00100'
+  adaptiveCruiseControl		(3),	-- B'00010'
+  limiter			(4)	-- B'00001'
+}
+
+CamTaggedList ::= OCTET STRING
+-- The tagged list is not encoded using ASN.1, but according to SAFESPOT rules.
+-- For a complete definition, please refer to SAFESPOT SP7 document "Data format and messages"
+
+Elevation ::= INTEGER(-5000..32767)
+-- LSB=0.2m, with a 1Km negative offset
+-- It represents the elevation respect to the sea level
+-- Actual range (-1000..6534) m. The value +32767 means value not available
+
+ExteriorLights ::= BIT STRING {
+--  allLightsOff		( ),	   B'00000000'
+  lowBeamHeadlightsOn		(0),	-- B'10000000'
+  highBeamHeadlightsOn		(1),	-- B'01000000'
+  leftTurnSignalOn		(2),	-- B'00100000'
+  rightTurnSignalOn		(3),	-- B'00010000'
+--  hazardSignalOn		( ),	   B'00110000'
+  automaticLightControlOn	(4),	-- B'00001000'
+  daytimeRunningLightsOn	(5),	-- B'00000100'
+  fogLightOn			(6),	-- B'00000010'
+  parkingLightsOn		(7)	-- B'00000001'
+}
+
+Heading ::= INTEGER(0..65535)
+-- LSB of 0.0054931640625 degrees
+-- The current heading of the vehicle, expressed in units of 0.005493247 degrees from North, such that 65535 such degrees represent (360degrees - 1 LSB)
+-- North shall be defined as the axis defined by the WSG-84 coordinate system and its reference ellipsoid. Increasing when turning counter-clockwise.
+
+IncompleteCovarianceMatrix ::= SEQUENCE {
+  ab		INTEGER(0..255),	-- Latitude-Longitude covariance
+  ac		INTEGER(0..255),	-- Latitude-Heading covariance
+  ad		INTEGER(0..255),	-- Latitude-Speed covariance
+  af		INTEGER(0..255),	-- Latitude-YawRate covariance
+  bc		INTEGER(0..255),	-- Longitude-Heading covariance
+  bd		INTEGER(0..255),	-- Longitude-Speed covariance
+  bf		INTEGER(0..255),	-- Longitude-YawRate covariance
+  cc		INTEGER(0..255),	-- Heading variance
+  cd		INTEGER(0..255),	-- Heading-Speed covariance
+  cf		INTEGER(0..255),	-- Heading-YawRate covariance
+  dd		INTEGER(0..255),	-- Speed variance
+  df		INTEGER(0..255),	-- Speed-YawRate covariance
+  ff		INTEGER(0..255)		-- YawRate variance
+}
+-- Incomplete covariance matrix are reported as a sequence of 13 bytes described in Annex 1
+
+LatitudePosition ::= INTEGER(-720000000..720000000)
+-- LSB = 1/8 micro degree
+-- Actual range: (-90..+90) degrees
+-- Position of the geometrical centre of the object
+
+LongitudePosition ::= INTEGER(-1440000000..1440000000)
+-- LSB =1/8 micro degree
+-- Actual range: (-180..+180) degrees
+-- Position of the geometrical centre of the object
+
+LongitudinalAcceleration ::= INTEGER(-2000..2000)
+-- LSB units of 0.01 m/s^2
+-- Actual range: +/- 20 m/s^2 (about +/- 2g)
+
+NearestRsu ::= SEQUENCE OF Position2D
+-- If unavailable, latitude and longitude are set to 0
+
+NodeID ::= INTEGER
+-- Indicates a unique identifier on VANET
+-- Max possible value: 2^64-1 = 18446744073709551615
+
+NodeType ::= ENUMERATED {
+  reserved	(0),
+  vehicle	(1),
+  rsu		(2)
+}
+
+Position2D ::= SEQUENCE {
+  long2D	LongitudePosition,
+  lat2D		LatitudePosition
+}
+
+PositionCovariance ::= INTEGER(0..255)
+-- Latitude-Longitude covariance as described in Annex 1
+
+PositionVariance ::= SEQUENCE {
+  aa		INTEGER(0..255),	-- Latitude variance
+  bb		INTEGER(0..255)		-- Longitude variance
+}
+-- Position variances are reported as described in Annex 1
+
+Priority ::= ENUMERATED {
+  reserved		(0),
+  cam			(1),
+  emergency		(2),
+  high			(3),
+  medium		(4),
+  low			(5)
+}
+-- VANET Message Priority
+
+SpeedModule ::= INTEGER(-32768..32767)
+-- Units of 0.01 m/s
+-- Actual range (-327.68..327.67) m/s
+-- Speed = 327.65 means no speed available
+-- Negative values imply the vehicle in moving in reverse
+
+Temperature ::= INTEGER(0..191)
+-- in deg C with a +40 offset
+-- Temperature=0 means -40°C, Temperature=140 means 100°C
+
+Timestamp ::= SEQUENCE {
+  seconds		INTEGER(0..4294967295),	-- seconds since 1970/01/01
+  milliseconds		INTEGER(0..999)		-- milliseconds
+}
+-- The Unix UTC representation reduced to milliseconds resolution
+
+VehicleAttribute ::= BIT STRING {
+  safespot	(0),	-- B'1000'
+  safeprobe	(1),	-- B'0100'
+  cvis		(2),	-- B'0010'
+  crashed	(3)	-- B'0001'
+}
+
+VehicleDescription ::= ENUMERATED {
+  unknown			(0),
+  car				(1),
+  lightGoodsVehicle		(2),
+  heavyGoodsVehicle		(3),
+  publicTransportVehicle	(4),
+  pedalCycle			(5),
+  emergencyVehicle		(6),
+  worksVehicle			(7),
+  exceptionalSizeVehicle	(8),
+  vehicleWithTrailer		(9),
+  highSidedVehicle		(10),
+  minibus			(11),
+  taxi				(12),
+  tram				(13),
+  trolleyBus			(14),
+  train				(15),
+  postBus			(16),
+  schoolBus			(17),
+  militaryVvehicle		(18),
+  motorcycle			(19),
+  sledge			(20),
+  assistanceVehicle		(21),
+  vehicle			(31)
+}
+
+VehicleHeight ::= INTEGER(0..255)
+-- LSB units of 0.05 m
+-- The height of the vehicle excluding any antenna(s), expressed in units of 5cm
+-- In case of vehicles with adjustable ride heights, camper shells, and other devices which may cause the overall height to vary, the largest possible height will be transmitted
+
+VehicleLength ::= INTEGER(0..16383)
+-- LSB units of 0.01 m
+-- The length of the vehicle expressed in centimeters, unsigned
+
+VehicleSize ::= SEQUENCE {
+  width		VehicleWidth,
+  length	VehicleLength,
+  height	VehicleHeight
+}
+
+VehicleType ::= SEQUENCE {
+  vehicleDescription		VehicleDescription,
+  vehicleAttribute		VehicleAttribute
+}
+
+VehicleWidth ::= INTEGER(0..1023)
+-- LSB units of 0.01 m
+-- The width of the vehicle expressed in centimeters, unsigned
+
+VisibilityRange ::= INTEGER(0..255)
+-- LSB units of 5 m
+-- Actual range: 0-1000 m
+-- A value > 200 means data not available
+
+Weather ::= ENUMERATED {
+-- weatherbug			(0),
+  other				(1),
+  unknown			(2),
+  noPrecipitation		(3),
+  unidentifiedSlight		(4),
+  unidentifiedModerate		(5),
+  unidentifiedHeavy		(6),
+  snowSlight			(7),
+  snowModerate			(8),
+  snowHeavy			(9),
+  rainSlight			(10),
+  rainModerate			(11),
+  rainHeavy			(12),
+  frozenPrecipitationSlight	(13),
+  frozenPrecipitationModerate	(14),
+  frozenPrecipitationHeavy	(15)
+}
+
+YawRate ::= INTEGER(-32768..32767)
+-- LSB units of 0.01 degrees/s
+-- Actual range (-327.68..327.67)
+-- YawRate = 327.67 means no yaw rate available
+-- The YawRate of the vehicle, a signed value (positive when counterclockwise). The YawRate Element reports the vehicle's rotation in degrees per second
+  
+END

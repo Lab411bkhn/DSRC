@@ -1,0 +1,32 @@
+26c26
+< 	if((value >= 0 && value <= 127)) {
+---
+> 	if(value >= 0) {
+43,50c43,50
+< 	td->free_struct    = asn_DEF_NativeInteger.free_struct;
+< 	td->print_struct   = asn_DEF_NativeInteger.print_struct;
+< 	td->ber_decoder    = asn_DEF_NativeInteger.ber_decoder;
+< 	td->der_encoder    = asn_DEF_NativeInteger.der_encoder;
+< 	td->xer_decoder    = asn_DEF_NativeInteger.xer_decoder;
+< 	td->xer_encoder    = asn_DEF_NativeInteger.xer_encoder;
+< 	td->uper_decoder   = asn_DEF_NativeInteger.uper_decoder;
+< 	td->uper_encoder   = asn_DEF_NativeInteger.uper_encoder;
+---
+> 	td->free_struct    = asn_DEF_ExtensibleInteger.free_struct;
+> 	td->print_struct   = asn_DEF_ExtensibleInteger.print_struct;
+> 	td->ber_decoder    = asn_DEF_ExtensibleInteger.ber_decoder;
+> 	td->der_encoder    = asn_DEF_ExtensibleInteger.der_encoder;
+> 	td->xer_decoder    = asn_DEF_ExtensibleInteger.xer_decoder;
+> 	td->xer_encoder    = asn_DEF_ExtensibleInteger.xer_encoder;
+> 	td->uper_decoder   = asn_DEF_ExtensibleInteger.uper_decoder;
+> 	td->uper_encoder   = asn_DEF_ExtensibleInteger.uper_encoder;
+52,55c52,55
+< 		td->per_constraints = asn_DEF_NativeInteger.per_constraints;
+< 	td->elements       = asn_DEF_NativeInteger.elements;
+< 	td->elements_count = asn_DEF_NativeInteger.elements_count;
+< 	td->specifics      = asn_DEF_NativeInteger.specifics;
+---
+> 		td->per_constraints = asn_DEF_ExtensibleInteger.per_constraints;
+> 	td->elements       = asn_DEF_ExtensibleInteger.elements;
+> 	td->elements_count = asn_DEF_ExtensibleInteger.elements_count;
+> 	td->specifics      = asn_DEF_ExtensibleInteger.specifics;

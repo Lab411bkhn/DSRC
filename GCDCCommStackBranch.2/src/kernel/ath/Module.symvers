@@ -1,0 +1,4 @@
+0x31219afb	ath_is_world_regd	/home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/ath	EXPORT_SYMBOL
+0x7bcd5eea	ath_regd_init	/home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/ath	EXPORT_SYMBOL
+0xbe25b39d	ath_regd_get_band_ctl	/home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/ath	EXPORT_SYMBOL
+0x5237a962	ath_reg_notifier_apply	/home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/ath	EXPORT_SYMBOL

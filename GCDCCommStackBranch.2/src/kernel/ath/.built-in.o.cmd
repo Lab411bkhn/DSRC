@@ -1,0 +1,1 @@
+cmd_/home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/built-in.o :=  rm -f /home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/built-in.o; ar rcs /home/its/Desktop/lab411_GCDC-master/GCDCCommStackBranch/src/kernel/ath/built-in.o

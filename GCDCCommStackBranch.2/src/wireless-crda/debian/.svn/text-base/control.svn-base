@@ -1,0 +1,15 @@
+Source: wireless-crda
+Section: admin
+Priority: optional
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Standards-Version: 3.6.2.1
+Build-Depends: debhelper (>= 5.0.0), pkg-config, libgcrypt11-dev, libnl-dev
+Vcs-Git: http://kernel.ubuntu.com/git-repos/rtg/wireless-crda.git
+
+Package: wireless-crda
+Architecture: any
+Depends: udev
+Description: Wireless Central Regulatory Domain Agent
+ This package provides the CRDA agent for wireless drivers to
+ determine the regulatory domain channel and power settings.
+

@@ -1,0 +1,4 @@
+1332c1332
+< 		" (%d..%d, effective %d)%s",
+---
+> 		" (%ld..%ld, effective %d)%s",

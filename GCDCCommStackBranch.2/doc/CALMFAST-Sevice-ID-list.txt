@@ -1,0 +1,9 @@
+ID	Service			Project(s)	Point of Contact	Comments
+==========================================================================================================
+32	nl.spits.beacon		SPITS		?			Used for Cooperative Awareness Messages (CAM) beacons
+42	nl.peek.priority	Freilot		Eric Koenders, Peek	Priority at intersections
+43	nl.peek.logging		Freilot		Eric Koenders, Peek	Vehicle log to RSU dump
+51	nl.tno.shockwave	SPITS		Igor Passchier, TNO	Shockwave demping speed advise application
+52	nl.tno.management	SPITS		Igor Passchier, TNO	SPITS A270 experiment management and control
+53	nl.gcdc.beacon		GCDC		Jan de Jongh, TNO	GCDC beaconing, comparible to CAM
+54	nl.gcdc.management	SPITS, GCDC	Jan de Jongh, TNO	GCDC experiment management and control
